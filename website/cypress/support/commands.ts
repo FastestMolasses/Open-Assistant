@@ -47,6 +47,13 @@ Cypress.Commands.add("signInUsingEmailedLink", (emailAddress) => {
     const loginLink = emails.pop().html.match(/href="[^"]+(\/api\/auth\/callback\/[^"]+?)"/)[1];
     cy.visit(loginLink);
     cy.url().should("include", "/dashboard");
+
+    // accept the terms of service, first time only
+    try {
+      cy.get('[data-cy="accept-tos"]').click();
+    } catch (err) {
+      console.log("Already accepted ToS");
+    }
   });
 });
 
